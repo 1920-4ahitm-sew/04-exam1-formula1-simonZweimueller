@@ -9,11 +9,15 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "F1_RESULT")
-@NamedQueries(
+@NamedQueries({
         @NamedQuery(
                 name = "Result.getPointsSumOfDriver",
-                query = "select sum(r.points) from Result r where r.driver = (select d.id from Driver d where d.name like :NAME)")
-)
+                query = "select sum(r.points) from Result r where r.driver = (select d.id from Driver d where d.name like :NAME)"),
+        @NamedQuery(
+                name = "Result.getWinner",
+                query = "select re.driver from Result re where re.position = 1 and re.race = (select ra.id from Race ra where ra.country like :COUNTRY)"
+        )
+})
 public class Result {
 
     @Transient
