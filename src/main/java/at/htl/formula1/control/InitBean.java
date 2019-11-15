@@ -63,7 +63,6 @@ public class InitBean {
 
                 Race race = new Race(Long.parseLong(attributes[0]), attributes[1], LocalDate.parse(attributes[2], DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
-
                 em.persist(race);
             }
 
