@@ -12,10 +12,15 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(
                 name = "Result.getPointsSumOfDriver",
-                query = "select sum(r.points) from Result r where r.driver = (select d.id from Driver d where d.name like :NAME)"),
+                query = "select sum(r.points) from Result r where r.driver = (select d.id from Driver d where d.name like :NAME)"
+        ),
         @NamedQuery(
                 name = "Result.getWinner",
                 query = "select re.driver from Result re where re.position = 1 and re.race = (select ra.id from Race ra where ra.country like :COUNTRY)"
+        ),
+        @NamedQuery(
+                name = "Result.wonRaces",
+                query = "select re.race from Result re where re.position = 1 and re.driver in (select distinct d.id from Driver d where d.team = (select t.id from Team t where t.name like :TEAMNAME))"
         )
 })
 public class Result {
