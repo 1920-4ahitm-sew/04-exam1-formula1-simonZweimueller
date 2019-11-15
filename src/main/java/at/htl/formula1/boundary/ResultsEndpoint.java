@@ -10,10 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Path("results")
 public class ResultsEndpoint {
@@ -65,6 +62,21 @@ public class ResultsEndpoint {
         List<Race> wonRaces = em.createNamedQuery("Result.wonRaces", Race.class).setParameter("TEAMNAME", team).getResultList();
 
         return wonRaces;
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("all")
+    public List<String[]> allRacesWonByTeam() {
+        List<Driver> drivers = em.createNamedQuery("Driver.findAll", Driver.class).getResultList();
+        List<String[]> driverWithPoints = new LinkedList<>();
+
+        for (Driver driver: drivers) {
+            Long points = em.createNamedQuery("Result.allPoints", Long.class).setParameter("ID", driver).getSingleResult();
+            driverWithPoints.add(new String[]{driver.toString(), "" + points});
+        }
+
+        return driverWithPoints;
     }
 
 
