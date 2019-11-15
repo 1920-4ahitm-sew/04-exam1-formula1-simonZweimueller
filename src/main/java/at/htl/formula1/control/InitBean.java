@@ -82,6 +82,20 @@ public class InitBean {
      * @param teamFileName
      */
     private void readTeamsAndDriversFromFile(String teamFileName) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/" + teamFileName)));
+        try {
+            String line;
+            br.readLine();
+
+            while((line = br.readLine()) != null) {
+                String[] attributes = line.split(";");
+
+                persistTeamAndDrivers(attributes);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -98,6 +112,23 @@ public class InitBean {
 
     private void persistTeamAndDrivers(String[] line) {
 
+        Team team;
+
+        try {
+             team = em.createNamedQuery(
+                    "Team.findByName", Team.class)
+                    .setParameter("NAME", line[0]).getSingleResult();
+        } catch (NoResultException e) {
+            team = new Team(line[0]);
+
+            em.persist(team);
+        }
+
+        Driver driver1 = new Driver(line[1], team);
+        Driver driver2 = new Driver(line[2], team);
+
+        em.persist(driver1);
+        em.persist(driver2);
     }
 
 
