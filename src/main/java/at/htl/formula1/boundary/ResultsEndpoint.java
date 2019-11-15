@@ -1,6 +1,7 @@
 package at.htl.formula1.boundary;
 
 import at.htl.formula1.entity.Driver;
+import at.htl.formula1.entity.Race;
 import at.htl.formula1.entity.Result;
 
 import javax.json.*;
@@ -56,5 +57,20 @@ public class ResultsEndpoint {
 
 
     // Ergänzen Sie Ihre eigenen Methoden ...
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("raceswon")
+    public List<Race> allRacesWonByTeam(@QueryParam("team") String team) {
+        System.out.println(team);
+        List<Race> wonRaces = em.createNamedQuery("Result.wonRaces", Race.class).setParameter("TEAMNAME", team).getResultList();
+
+        //List<Race> wonRaces = em.createNamedQuery("Result.winners", Race.class).getResultList();
+
+        System.out.println(wonRaces);
+
+        return wonRaces;
+        //return null;
+    }
 
 }
