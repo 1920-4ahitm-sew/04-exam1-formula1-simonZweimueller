@@ -2,7 +2,7 @@
 <dataSource name="db@localhost">
   <database-model serializer="dbm" dbms="DERBY" family-id="DERBY" format-version="4.16">
     <root id="1">
-      <ServerVersion>10.15.1.3</ServerVersion>
+      <ServerVersion>10.14.2.0</ServerVersion>
     </root>
     <schema id="2" parent="1" name="APP">
       <Current>1</Current>
