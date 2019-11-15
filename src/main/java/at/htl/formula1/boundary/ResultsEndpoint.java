@@ -62,15 +62,10 @@ public class ResultsEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("raceswon")
     public List<Race> allRacesWonByTeam(@QueryParam("team") String team) {
-        System.out.println(team);
         List<Race> wonRaces = em.createNamedQuery("Result.wonRaces", Race.class).setParameter("TEAMNAME", team).getResultList();
 
-        //List<Race> wonRaces = em.createNamedQuery("Result.winners", Race.class).getResultList();
-
-        System.out.println(wonRaces);
-
         return wonRaces;
-        //return null;
     }
+
 
 }
