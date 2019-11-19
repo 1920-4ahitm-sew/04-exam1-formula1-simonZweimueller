@@ -25,7 +25,9 @@ public class ResultsEndpoint {
      */
     @GET
     public JsonObject getPointsSumOfDriver(@QueryParam("name") String name) {
-        Long points = em.createNamedQuery("Result.getPointsSumOfDriver", Long.class).setParameter("NAME", name).getSingleResult();
+        Long points = em.createNamedQuery("Result.getPointsSumOfDriver", Long.class)
+                .setParameter("NAME", name)
+                .getSingleResult();
 
         JsonObject jsonObject = Json.createObjectBuilder()
                 .add("driver", name)
@@ -45,7 +47,9 @@ public class ResultsEndpoint {
     public Response findWinnerOfRace(@PathParam("country") String country) {
 
         Long driverId = em.createNamedQuery("Result.getWinner", Driver.class)
-                        .setParameter("COUNTRY", country).getSingleResult().getId();
+                        .setParameter("COUNTRY", country).
+                        getSingleResult().
+                        getId();
 
         Driver winner = em.find(Driver.class, driverId);
 
@@ -59,7 +63,9 @@ public class ResultsEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("raceswon")
     public List<Race> allRacesWonByTeam(@QueryParam("team") String team) {
-        List<Race> wonRaces = em.createNamedQuery("Result.wonRaces", Race.class).setParameter("TEAMNAME", team).getResultList();
+        List<Race> wonRaces = em.createNamedQuery("Result.wonRaces", Race.class)
+                .setParameter("TEAMNAME", team)
+                .getResultList();
 
         return wonRaces;
     }
@@ -72,7 +78,9 @@ public class ResultsEndpoint {
         List<String[]> driverWithPoints = new LinkedList<>();
 
         for (Driver driver: drivers) {
-            Long points = em.createNamedQuery("Result.allPoints", Long.class).setParameter("ID", driver).getSingleResult();
+            Long points = em.createNamedQuery("Result.allPoints", Long.class)
+                    .setParameter("ID", driver)
+                    .getSingleResult();
             driverWithPoints.add(new String[]{driver.toString(), "" + points});
         }
 
