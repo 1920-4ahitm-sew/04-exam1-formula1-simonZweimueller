@@ -53,7 +53,13 @@ public class InitBean {
     @Transactional
     private void readRacesFromFile(String racesFileName) {
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/" + racesFileName)));
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(
+                        getClass()
+                                .getResourceAsStream(
+                                        "/" + racesFileName),
+                        StandardCharsets.UTF_8)
+        );
         try {
             String line;
             br.readLine();
@@ -81,7 +87,14 @@ public class InitBean {
      * @param teamFileName
      */
     private void readTeamsAndDriversFromFile(String teamFileName) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/" + teamFileName)));
+        BufferedReader br = new BufferedReader(
+                                new InputStreamReader(
+                                        getClass()
+                                                .getResourceAsStream(
+                                                        "/" + teamFileName),
+                                                         StandardCharsets.UTF_8)
+        );
+
         try {
             String line;
             br.readLine();
