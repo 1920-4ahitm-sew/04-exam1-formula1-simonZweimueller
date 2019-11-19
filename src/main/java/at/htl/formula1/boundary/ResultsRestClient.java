@@ -71,7 +71,9 @@ public class ResultsRestClient {
 
             em.persist(new Result(em.find(Race.class, raceNo),
                     position,
-                    em.createNamedQuery("Driver.findByName", Driver.class).setParameter("NAME", name).getSingleResult()));
+                    em.createNamedQuery("Driver.findByName", Driver.class)
+                            .setParameter("NAME", name)
+                            .getSingleResult()));
 
         }
     }
