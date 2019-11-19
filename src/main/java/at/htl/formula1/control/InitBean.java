@@ -67,7 +67,9 @@ public class InitBean {
             while((line = br.readLine()) != null) {
                 String[] attributes = line.split(";");
 
-                Race race = new Race(Long.parseLong(attributes[0]), attributes[1], LocalDate.parse(attributes[2], DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+                Race race = new Race(Long.parseLong(attributes[0]),
+                        attributes[1],
+                        LocalDate.parse(attributes[2], DateTimeFormatter.ofPattern("dd.MM.yyyy")));
 
                 em.persist(race);
             }
@@ -129,7 +131,8 @@ public class InitBean {
         try {
              team = em.createNamedQuery(
                     "Team.findByName", Team.class)
-                    .setParameter("NAME", line[0]).getSingleResult();
+                    .setParameter("NAME", line[0])
+                     .getSingleResult();
         } catch (NoResultException e) {
             team = new Team(line[0]);
 
