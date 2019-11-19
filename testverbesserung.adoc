@@ -1,0 +1,153 @@
+= Testverbesserung
+
+== Simon Zweimüller
+
+=== InitBean, charset fehlt
+
+.Alter Code
+[source, java]
+----
+BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/" + racesFileName)));
+----
+
+Probleme: +
+Hat beim Test auch ohne Charset funktioniert. +
+Wird aber für Systemübergreifende Programme benötigt.
+
+.Neuer Code
+[source, java]
+----
+BufferedReader br = new BufferedReader(
+        new InputStreamReader(
+                getClass()
+                .getResourceAsStream(
+                        "/" + teamFileName),
+                        StandardCharsets.UTF_8)
+);
+----
+
+=== Nun kommen nur mehr Verbesserungen bei der Formatierung
+
+==== Initbean
+
+.Alter Code
+[source, java]
+----
+Race race = new Race(Long.parseLong(attributes[0]), attributes[1], LocalDate.parse(attributes[2], DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+
+team = em.createNamedQuery(
+"Team.findByName", Team.class)
+.setParameter("NAME", line[0]).getSingleResult();
+----
+
+.Neuer Code
+[source, java]
+----
+Race race = new Race(Long.parseLong(attributes[0]),
+                        attributes[1],
+                        LocalDate.parse(attributes[2], DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+
+team = em.createNamedQuery(
+"Team.findByName", Team.class)
+.setParameter("NAME", line[0])
+.getSingleResult();
+----
+
+==== ResultsEndpoint
+
+.Alter Code
+[source, java]
+----
+Long points = em.createNamedQuery("Result.getPointsSumOfDriver", Long.class).setParameter("NAME", name).getSingleResult();
+
+Long driverId = em.createNamedQuery("Result.getWinner", Driver.class)
+.setParameter("COUNTRY", country).getSingleResult().getId();
+
+List<Race> wonRaces = em.createNamedQuery("Result.wonRaces", Race.class).setParameter("TEAMNAME", team).getResultList();
+
+Long points = em.createNamedQuery("Result.allPoints", Long.class).setParameter("ID", driver).getSingleResult();
+----
+
+.Neuer Code
+[source, java]
+----
+Long points = em.createNamedQuery("Result.getPointsSumOfDriver", Long.class)
+.setParameter("NAME", name)
+.getSingleResult();
+
+Long driverId = em.createNamedQuery("Result.getWinner", Driver.class)
+.setParameter("COUNTRY", country).
+getSingleResult().
+getId();
+
+List<Race> wonRaces = em.createNamedQuery("Result.wonRaces", Race.class)
+.setParameter("TEAMNAME", team)
+.getResultList();
+
+Long points = em.createNamedQuery("Result.allPoints", Long.class)
+.setParameter("ID", driver)
+.getSingleResult();
+----
+
+==== ResultsEndpoint
+
+.Alter Code
+[source, java]
+----
+em.createNamedQuery("Driver.findByName", Driver.class).setParameter("NAME", name).getSingleResult()));
+----
+
+.Neuer Code
+[source, java]
+----
+em.createNamedQuery("Driver.findByName", Driver.class)
+                            .setParameter("NAME", name)
+                            .getSingleResult()));
+----
+
+==== Team
+
+.Alter Code
+[source, java]
+----
+@NamedQueries(
+        @NamedQuery(name = "Team.findByName", query = "select t from Team t where t.name like :NAME")
+)
+----
+
+.Neuer Code
+[source, java]
+----
+@NamedQueries(
+    @NamedQuery(
+        name = "Team.findByName",
+        query = "select t from Team t where t.name like :NAME"
+    )
+)
+----
+
+==== Driver
+
+.Alter Code
+[source, java]
+----
+@NamedQueries({
+        @NamedQuery(name = "Driver.findByName", query = "select d from Driver d where d.name like :NAME"),
+        @NamedQuery(name = "Driver.findAll", query = "select d from Driver d")
+})
+----
+
+.Neuer Code
+[source, java]
+----
+@NamedQueries({
+        @NamedQuery(
+                name = "Driver.findByName",
+                query = "select d from Driver d where d.name like :NAME"
+        ),
+        @NamedQuery(
+                name = "Driver.findAll",
+                query = "select d from Driver d"
+        )
+})
+----
