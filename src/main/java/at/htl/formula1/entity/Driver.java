@@ -10,8 +10,14 @@ import javax.persistence.*;
 @Entity
 @Table(name = "F1_DRIVER")
 @NamedQueries({
-        @NamedQuery(name = "Driver.findByName", query = "select d from Driver d where d.name like :NAME"),
-        @NamedQuery(name = "Driver.findAll", query = "select d from Driver d")
+        @NamedQuery(
+                name = "Driver.findByName",
+                query = "select d from Driver d where d.name like :NAME"
+        ),
+        @NamedQuery(
+                name = "Driver.findAll",
+                query = "select d from Driver d"
+        )
 })
 public class Driver {
 
